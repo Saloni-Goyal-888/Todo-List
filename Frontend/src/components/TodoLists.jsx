@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 function TodoLists({ token }) {
   const [todoLists, setTodoLists] = useState([])
@@ -19,7 +20,7 @@ function TodoLists({ token }) {
     
     setIsLoading(true)
     try {
-      const response = await axios.get('http://localhost:3000/api/todolists', {
+      const response = await axios.get(`${BACKEND_URL}/api/todolists`, {
         headers: { 'x-auth-token': token }
       })
       setTodoLists(response.data)
@@ -33,7 +34,7 @@ function TodoLists({ token }) {
 
   const handleCreateList = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/todolists', 
+      const response = await axios.post(`${BACKEND_URL}/api/todolists`, 
         { name: newListName },
         { headers: { 'x-auth-token': token } }
       )
@@ -48,7 +49,7 @@ function TodoLists({ token }) {
 
   const handleUpdateList = async () => {
     try {
-      await axios.put(`http://localhost:3000/api/todolists/${editingList._id}`, 
+      await axios.put(`${BACKEND_URL}/api/todolists/${editingList._id}`, 
         { name: newListName },
         { headers: { 'x-auth-token': token } }
       )
@@ -65,7 +66,7 @@ function TodoLists({ token }) {
   const handleDeleteList = async (id) => {
     if (window.confirm('Are you sure you want to delete this list and all its todos?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/todolists/${id}`, {
+        await axios.delete(`${BACKEND_URL}/api/todolists/${id}`, {
           headers: { 'x-auth-token': token }
         })
         fetchTodoLists()

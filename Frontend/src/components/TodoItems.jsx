@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import axios from 'axios'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 function TodoItems({ token }) {
   const { listId } = useParams()
@@ -22,7 +23,7 @@ function TodoItems({ token }) {
     if (!token || !listId) return
     
     try {
-      const response = await axios.get(`http://localhost:3000/api/todolists/${listId}`, {
+      const response = await axios.get(`${BACKEND_URL}/api/todolists/${listId}`, {
         headers: { 'x-auth-token': token }
       })
       setTodoList(response.data)
@@ -37,7 +38,7 @@ function TodoItems({ token }) {
     
     setIsLoading(true)
     try {
-      const response = await axios.get(`http://localhost:3000/api/todos/list/${listId}`, {
+      const response = await axios.get(`${BACKEND_URL}/api/todos/list/${listId}`, {
         headers: { 'x-auth-token': token }
       })
       setTodos(response.data)
@@ -51,7 +52,7 @@ function TodoItems({ token }) {
 
   const handleCreateTodo = async () => {
     try {
-      await axios.post(`http://localhost:3000/api/todos/list/${listId}`, 
+      await axios.post(`${BACKEND_URL}/api/todos/list/${listId}`, 
         { 
           title: todoTitle,
           description: todoDescription 
@@ -70,7 +71,7 @@ function TodoItems({ token }) {
 
   const handleUpdateTodo = async () => {
     try {
-      await axios.put(`http://localhost:3000/api/todos/${editingTodo._id}`, 
+      await axios.put(`${BACKEND_URL}/api/todos/${editingTodo._id}`, 
         { 
           title: todoTitle,
           description: todoDescription 
@@ -90,7 +91,7 @@ function TodoItems({ token }) {
 
   const handleToggleComplete = async (todo) => {
     try {
-      await axios.put(`http://localhost:3000/api/todos/${todo._id}`, 
+      await axios.put(`${BACKEND_URL}/api/todos/${todo._id}`, 
         { completed: !todo.completed },
         { headers: { 'x-auth-token': token } }
       )
@@ -104,7 +105,7 @@ function TodoItems({ token }) {
   const handleDeleteTodo = async (id) => {
     if (window.confirm('Are you sure you want to delete this todo?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/todos/${id}`, {
+        await axios.delete(`${BACKEND_URL}/api/todos/${id}`, {
           headers: { 'x-auth-token': token }
         })
         fetchTodos()

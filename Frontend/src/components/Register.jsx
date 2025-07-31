@@ -8,13 +8,13 @@ function Register() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
-
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     
     try {
-      await axios.post('http://localhost:3000/api/auth/register', {
+      await axios.post(`${BACKEND_URL}/api/auth/register`, {
         username,
         email,
         password
